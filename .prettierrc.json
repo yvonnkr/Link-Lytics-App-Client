@@ -10,7 +10,7 @@
   "jsxSingleQuote": false,
   "endOfLine": "lf",
   "proseWrap": "preserve",
-  "htmlWhitespaceSensitivity": "ignore",
+  "htmlWhitespaceSensitivity": "css",
   "jsxBracketSameLine": false
 }
 

@@ -1,13 +1,21 @@
 import "./App.css";
+import LandingPage from "./components/LandingPage.jsx";
+import AboutPage from "./components/AboutPage.jsx";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   return (
     <>
-      <div className="container">
-        <h2 className="text-3xl text-emerald-800 font-bold underline italic ">
-          LinkLytics App
-        </h2>
-      </div>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage />} />
+        </Routes>
+        <Footer />
+      </Router>
     </>
   );
 }

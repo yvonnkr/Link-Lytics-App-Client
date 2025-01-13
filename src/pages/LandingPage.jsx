@@ -1,7 +1,7 @@
 import "react";
 import { motion } from "motion/react";
 
-import Card from "./Card";
+import Card from "../components/Card.jsx";
 import { useNavigate } from "react-router-dom";
 
 let desc =

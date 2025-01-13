@@ -1,10 +1,10 @@
 import "./App.css";
-import LandingPage from "./components/LandingPage.jsx";
-import AboutPage from "./components/AboutPage.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
+import AboutPage from "./pages/AboutPage.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-import RegisterPage from "./components/RegisterPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 function App() {
   return (

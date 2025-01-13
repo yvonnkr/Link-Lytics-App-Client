@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import TextField from "./TextField";
+import TextField from "../components/TextField.jsx";
 import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {

@@ -2,6 +2,9 @@ import { twMerge } from "tailwind-merge";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+com+$/;
 
+const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
 const URL_REGEX =
   /^(https?:\/\/)?(([a-zA-Z0-9\u00a1-\uffff-]+\.)+[a-zA-Z\u00a1-\uffff]{2,})(:\d{2,5})?(\/\S*)?$/;
 
@@ -11,12 +14,18 @@ const validateInput = (type) => {
         value: EMAIL_REGEX,
         message: "Invalid email",
       }
-    : type === "url"
+    : type === "password"
       ? {
-          value: URL_REGEX,
-          message: "Please enter a valid url",
+          value: PASSWORD_REGEX,
+          message:
+            "Password must contain at least one uppercase letter, One lowercase letter, One number, and one special character",
         }
-      : null;
+      : type === "url"
+        ? {
+            value: URL_REGEX,
+            message: "Please enter a valid url",
+          }
+        : null;
 };
 
 const TextField = ({

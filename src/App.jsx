@@ -5,12 +5,14 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
       <Router>
         <Navbar />
+        <Toaster position="bottom-center" reverseOrder={false} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutPage />} />

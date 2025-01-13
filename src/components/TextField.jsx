@@ -39,6 +39,7 @@ const TextField = ({
   className,
   min,
   placeholder,
+  validate = true,
 }) => {
   return (
     <div className="flex flex-col gap-1">
@@ -63,7 +64,7 @@ const TextField = ({
             ? { value: min, message: `Minimum ${min} character is required` }
             : null,
 
-          pattern: validateInput(type),
+          pattern: validate && validateInput(type),
         })}
       />
 

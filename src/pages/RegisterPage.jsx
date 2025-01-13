@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import TextField from "../components/TextField.jsx";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../api/api.js";
+import { toastError, toastSuccess } from "../utils/common.js";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -21,7 +23,24 @@ const RegisterPage = () => {
   } = useForm({ defaultValues: formDefaultValues, mode: "onTouched" });
 
   const registerHandler = async (data) => {
-    console.log(data);
+    setLoader(true);
+
+    try {
+      await api.post("/api/auth/public/register", data);
+      reset();
+      navigate("/login");
+      toastSuccess("Registration successful");
+    } catch (error) {
+      const errorMessage = error.response.data.message;
+      if (errorMessage !== undefined) {
+        errorMessage.includes("Duplicate entry");
+        toastError("User with this email already exists");
+      } else {
+        toastError("Registration failed!");
+      }
+    } finally {
+      setLoader(false);
+    }
   };
 
   return (
@@ -67,7 +86,7 @@ const RegisterPage = () => {
             message="*Password is required"
             placeholder="Type your password"
             register={register}
-            min={6}
+            min={8}
             errors={errors}
           />
         </div>

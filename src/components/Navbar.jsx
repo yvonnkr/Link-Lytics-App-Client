@@ -2,16 +2,33 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoIosMenu } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
+import { useStoreContext } from "../contex/contextApi.jsx";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const token = false;
+  const { token, setToken, username, setUsername } = useStoreContext();
   const path = useLocation().pathname;
   const [navbarOpen, setNavbarOpen] = useState(false);
 
   const onLogOutHandler = () => {
+    setToken(null);
+    setUsername(null);
     localStorage.removeItem("JWT_TOKEN");
+    localStorage.removeItem("USERNAME");
     navigate("/login");
+  };
+
+  const displayLoggedInUser = () => {
+    const loggedInUser = username;
+    if (loggedInUser) {
+      return (
+        <span style={{ marginRight: "0.5rem", color: "#555" }}>
+          <strong>
+            {loggedInUser.charAt(0).toUpperCase() + loggedInUser.slice(1)}
+          </strong>
+        </span>
+      );
+    }
   };
 
   return (
@@ -62,20 +79,30 @@ const Navbar = () => {
             </li>
           )}
           {!token && (
-            <Link to="/register">
-              <li className=" sm:ml-0 -ml-1 bg-violet-800  text-white  cursor-pointer w-24 text-center font-semibold px-2 py-2 rounded-md  hover:text-slate-300   transition-all duration-150">
-                Sign Up
-              </li>
-            </Link>
+            <div className="flex items-center">
+              <Link to="/login" className="mx-2">
+                <li className="sm:ml-0 ml-0  text-white cursor-pointer w-24 text-center font-semibold px-2 py-2 rounded-md  hover:text-slate-300 transition-all duration-150">
+                  Login
+                </li>
+              </Link>
+              <Link to="/register">
+                <li className="sm:ml-0 -ml-1  bg-violet-800/50   text-white  cursor-pointer w-24 text-center font-semibold px-2 py-2 rounded-md  hover:text-slate-300   transition-all duration-150">
+                  Sign Up
+                </li>
+              </Link>
+            </div>
           )}
 
           {token && (
-            <button
-              onClick={onLogOutHandler}
-              className="sm:ml-0 -ml-1  text-white bg-violet-800  cursor-pointer w-24 text-center font-semibold px-2 py-2 rounded-md  hover:text-slate-300   transition-all duration-150"
-            >
-              Sign Out
-            </button>
+            <div className="flex items-center m-2">
+              {displayLoggedInUser()}
+              <button
+                onClick={onLogOutHandler}
+                className="sm:ml-0 -ml-1  text-white bg-violet-800/50  cursor-pointer w-24 text-center font-semibold px-2 py-2 rounded-md  hover:text-slate-300   transition-all duration-150"
+              >
+                Sign Out
+              </button>
+            </div>
           )}
         </ul>
         <button

@@ -5,10 +5,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../api/api.js";
 import { toastError, toastSuccess } from "../utils/common.js";
+import { useStoreContext } from "../contex/contextApi.jsx";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
+  const { setToken, setUsername } = useStoreContext();
 
   const formDefaultValues = {
     email: "",
@@ -26,10 +28,24 @@ const LoginPage = () => {
     setLoader(true);
 
     try {
+      // api call login
       const { data: response } = await api.post("/api/auth/public/login", data);
+      setToken(response.token);
       localStorage.setItem("JWT_TOKEN", JSON.stringify(response.token));
       toastSuccess("Login successful");
       reset();
+
+      // api call get username
+      const { data: usernameResponse } = await api.get("/api/users/username", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + response.token,
+        },
+      });
+      setUsername(usernameResponse);
+      localStorage.setItem("USERNAME", JSON.stringify(usernameResponse));
+
       navigate("/dashboard");
     } catch (error) {
       console.log(error);

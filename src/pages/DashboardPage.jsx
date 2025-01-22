@@ -3,9 +3,13 @@ import Graph from "../components/dashboard/Graph.jsx";
 // import { dummyData } from "../dummyData/data.js";
 import { useStoreContext } from "../contex/contextApi.jsx";
 import { useFetchTotalClicks } from "../hooks/useQuery.js";
+import { useState } from "react";
+import ShortenPopUp from "../components/dashboard/ShortenPopUp.jsx";
 
 const DashboardPage = () => {
   const { token } = useStoreContext();
+  const refetch = false;
+  const [shortenPopUp, setShortenPopUp] = useState(false);
   const { isLoading, data: totalClicks } = useFetchTotalClicks(token, onError);
 
   function onError() {
@@ -35,12 +39,21 @@ const DashboardPage = () => {
           </div>
 
           <div className="py-5 sm:text-end text-center">
-            <button className="bg-custom-gradient px-4 py-2 rounded-md text-white">
+            <button
+              className="bg-custom-gradient px-4 py-2 rounded-md text-white"
+              onClick={() => setShortenPopUp(true)}
+            >
               Create a New Short URL
             </button>
           </div>
         </div>
       )}
+
+      <ShortenPopUp
+        refetch={refetch}
+        open={shortenPopUp}
+        setOpen={setShortenPopUp}
+      />
     </div>
   );
 };

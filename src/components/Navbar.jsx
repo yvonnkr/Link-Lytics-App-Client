@@ -1,16 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoIosMenu } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { useStoreContext } from "../contex/contextApi.jsx";
+import { jwtDecode } from "jwt-decode";
+import { sessionExpiredToast } from "../utils/common.js";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { token, setToken, username, setUsername } = useStoreContext();
   const path = useLocation().pathname;
+  const { token, setToken, username, setUsername } = useStoreContext();
   const [navbarOpen, setNavbarOpen] = useState(false);
 
-  const onLogOutHandler = () => {
+  useEffect(() => {
+    if (token) {
+      autoLogoutIfTokenExpired(token);
+    }
+  }, [token]);
+
+  const autoLogoutIfTokenExpired = (currentToken) => {
+    const decoded = jwtDecode(currentToken);
+    const expirationTime = decoded.exp ? decoded.exp * 1000 : null; // `exp` is in seconds, convert to milliseconds
+    const now = Date.now();
+    const remainingTime = expirationTime - now;
+
+    if (remainingTime > 0) {
+      setTimeout(() => {
+        logOutHandler();
+        sessionExpiredToast();
+      }, remainingTime); // Logout after remaining time
+    } else {
+      logOutHandler(); // Logout immediately if the token is already expired
+      sessionExpiredToast();
+    }
+  };
+
+  const logOutHandler = () => {
     setToken(null);
     setUsername(null);
     localStorage.removeItem("JWT_TOKEN");
@@ -97,7 +122,7 @@ const Navbar = () => {
             <div className="flex items-center m-2">
               {displayLoggedInUser()}
               <button
-                onClick={onLogOutHandler}
+                onClick={logOutHandler}
                 className="sm:ml-0 -ml-1  text-white bg-violet-800/50  cursor-pointer w-24 text-center font-semibold px-2 py-2 rounded-md  hover:text-slate-300   transition-all duration-150"
               >
                 Sign Out

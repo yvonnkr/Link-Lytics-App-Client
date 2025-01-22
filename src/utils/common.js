@@ -11,7 +11,7 @@ export const toastSuccess = (message) => {
   });
 };
 
-export const toastError = (message) => {
+export const toastError = (message, duration) => {
   return toast.error(message, {
     style: {
       background: "linear-gradient(to right, #a14848, #cf6363)",
@@ -19,5 +19,13 @@ export const toastError = (message) => {
       fontWeight: "bold",
     },
     icon: "❌",
+    duration: duration ? duration : 5000,
   });
+};
+
+export const sessionExpiredToast = () => {
+  toastError(
+    "Your session has expired, Please login again to view your dashboard.",
+    10000
+  );
 };

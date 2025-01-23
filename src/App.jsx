@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import { Toaster } from "react-hot-toast";
 import LoginPage from "./pages/LoginPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/error" element={<ErrorPage />} />
         </Routes>
         <Footer />
       </Router>

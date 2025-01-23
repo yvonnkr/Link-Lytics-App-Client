@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FaExternalLinkAlt, FaRegCalendarAlt } from "react-icons/fa";
@@ -7,8 +8,12 @@ import { LiaCheckSolid } from "react-icons/lia";
 import { IoCopy } from "react-icons/io5";
 import { Hourglass } from "react-loader-spinner";
 import Graph from "./Graph.jsx";
+import { useStoreContext } from "../../contex/contextApi.jsx";
+import api from "../../api/api.js";
 
 const ShortenItem = ({ originalUrl, shortUrl, clickCount, createdDate }) => {
+  const navigate = useNavigate();
+  const { token } = useStoreContext();
   const [isCopied, setIsCopied] = useState(false);
   const [analyticToggle, setAnalyticToggle] = useState(false);
   const [selectedUrl, setSelectedUrl] = useState("");
@@ -26,6 +31,36 @@ const ShortenItem = ({ originalUrl, shortUrl, clickCount, createdDate }) => {
     }
     setAnalyticToggle(!analyticToggle);
   };
+
+  const fetchMyShortUrl = async () => {
+    setLoader(true);
+    try {
+      const { data } = await api.get(
+        `/api/urls/analytics/${selectedUrl}?startDate=2024-12-01T00:00:00&endDate=2025-12-31T23:59:59`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      setAnalyticsData(data);
+      setSelectedUrl("");
+      console.log(data);
+    } catch (error) {
+      navigate("/error");
+      console.log(error);
+    } finally {
+      setLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedUrl) {
+      fetchMyShortUrl();
+    }
+  }, [selectedUrl]);
 
   return (
     <div

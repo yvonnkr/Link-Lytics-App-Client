@@ -15,7 +15,6 @@ export const useFetchMyShortUrls = (token, onError) => {
     },
     {
       select: (data) => {
-        // sort response  data
         return data.data.sort(
           (a, b) => new Date(b.createdDate) - new Date(a.createdDate)
         );

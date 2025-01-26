@@ -6,10 +6,10 @@ import { FaExternalLinkAlt, FaRegCalendarAlt } from "react-icons/fa";
 import { MdAnalytics, MdOutlineAdsClick } from "react-icons/md";
 import { LiaCheckSolid } from "react-icons/lia";
 import { IoCopy } from "react-icons/io5";
-import { Hourglass } from "react-loader-spinner";
 import Graph from "./Graph.jsx";
 import { useStoreContext } from "../../contex/contextApi.jsx";
 import api from "../../api/api.js";
+import HourGlass from "../HourGlass.jsx";
 
 const ShortenItem = ({ originalUrl, shortUrl, clickCount, createdDate }) => {
   const navigate = useNavigate();
@@ -139,20 +139,7 @@ const ShortenItem = ({ originalUrl, shortUrl, clickCount, createdDate }) => {
           }  max-h-96 sm:mt-0 mt-5 min-h-96 relative  border-t-2 w-[100%] overflow-hidden `}
         >
           {loader ? (
-            <div className="min-h-[calc(450px-140px)] flex justify-center items-center w-full">
-              <div className="flex flex-col items-center gap-1">
-                <Hourglass
-                  visible={true}
-                  height="50"
-                  width="50"
-                  ariaLabel="hourglass-loading"
-                  wrapperStyle={{}}
-                  wrapperClass=""
-                  colors={["#306cce", "#72a1ed"]}
-                />
-                <p className="text-slate-700">Please Wait...</p>
-              </div>
-            </div>
+            <HourGlass />
           ) : (
             <>
               {analyticsData.length === 0 && (

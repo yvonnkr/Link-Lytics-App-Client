@@ -7,10 +7,13 @@ import { useState } from "react";
 import ShortenPopUp from "../components/dashboard/ShortenPopUp.jsx";
 import { FaLink } from "react-icons/fa";
 import ShortenUrlList from "../components/dashboard/ShortenUrlList.jsx";
+import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader.jsx";
 
 const DashboardPage = () => {
   const { token } = useStoreContext();
   const [shortenPopUp, setShortenPopUp] = useState(false);
+  const navigate = useNavigate();
 
   const {
     isLoading,
@@ -24,13 +27,13 @@ const DashboardPage = () => {
   );
 
   function onError() {
-    console.log("error");
+    navigate("/error");
   }
 
   return (
     <div className="lg:px-14 sm:px-8 min-h-[calc(100vh-64px)]">
       {loader ? (
-        <p>Loading...</p>
+        <Loader />
       ) : (
         <div className="lg:w-[90%] w-full mx-auto py-16">
           <div className=" h-96 relative ">
